@@ -5,7 +5,7 @@ const navIcon = document.querySelector("header .nav-icon"),
   getShortLinkInput = document.querySelector("main .converter-container .convert-url input"),
   getShortLinkButton = document.querySelector("main .converter-container .short-url-button"),
   linksSection = document.querySelector("main .converted-links-container"),
-  converterSection = document.querySelector('main .converter-container'),
+  converterForm = document.querySelector('main .converter-container'),
   loader = document.querySelector('.loader');
 
 
@@ -16,6 +16,7 @@ const navIcon = document.querySelector("header .nav-icon"),
 //? Variables
 let insertedLinks = [];
 let limitationLinks = 0;
+let isFocusedShortenInput = false;
 
 
 
@@ -173,25 +174,8 @@ function addLinkEffect(ele) {
 
 
 
-
-
-
-
-
-
-//? Events
-navIcon.addEventListener("click", () => {
-  navMenu.classList.toggle("active");
-});
-
-
-// Create warning message
-const warningMsg = document.createElement('div')
-warningMsg.classList.add('warning-message')
-converterSection.appendChild(warningMsg)
-
-
-getShortLinkButton.addEventListener("click", () => {
+function handleShortenButton(e) {
+  e.preventDefault()
   let val = getShortLinkInput.value;
   const regex = /\b(?:https?:\/\/|www\.)\S+\.\S+\b/;
 
@@ -241,8 +225,42 @@ getShortLinkButton.addEventListener("click", () => {
   // Show message if link is empty or not valid
   if (val === '') warningMsg.appendChild(document.createTextNode('Please add a link'))
   else warningMsg.appendChild(document.createTextNode('Link is not valid'))
+}
+
+
+
+
+
+
+
+
+
+//? Events
+document.addEventListener("click", (e) => {
+  e.target.id === 'shorten-link-input'
+    ? isFocusedShortenInput = true
+    : isFocusedShortenInput = false;
 });
 
+
+document.addEventListener("keypress", (e) => {
+  if (e.code === 'Enter' || e.key === 'Enter' && isFocusedShortenInput)
+    handleShortenButton(e)
+});
+
+
+navIcon.addEventListener("click", () => {
+  navMenu.classList.toggle("active");
+});
+
+
+// Create warning message
+const warningMsg = document.createElement('div')
+warningMsg.classList.add('warning-message')
+converterForm.appendChild(warningMsg)
+
+
+getShortLinkButton.addEventListener("click", (e) => handleShortenButton(e));
 
 
 getShortLinkInput.addEventListener('input', () => {
