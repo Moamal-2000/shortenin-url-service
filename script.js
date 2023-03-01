@@ -1,4 +1,5 @@
 "use strict";
+
 //? Selectors
 const navIcon = document.querySelector("header .nav-icon"),
   navMenu = document.querySelector(".mobile-nav-menu"),
@@ -211,6 +212,7 @@ function handleShortenButton(e) {
 
   // Check if link is valid
   if (regex.test(val)) {
+    getShortLinkInput.style.border = 'solid 2px #4fef40';
     createShortenLink(val);
     return true;
   }
